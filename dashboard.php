@@ -47,7 +47,6 @@
                                 <th>Employee</th>
                                 <th>Status</th>
                                 <th>Time In</th>
-                                <th>Time Out</th>
                             </thead>
                             <?php
                                 $sql = "SELECT * FROM timeclock";
@@ -67,7 +66,6 @@
                                         <th><?php echo $data[3]?></th>
                                         <th><?php echo $data[2]?></th>
                                         <th><?php echo $data[4]?></th>
-                                        <th><?php echo $data[5]?></th>
                                     </tr>
                                 </tbody>
                             <?php }mysqli_stmt_close($stmt); ?>
@@ -77,9 +75,11 @@
                         <p class="header">Orders</p>
                         <table class="tabletwo">
                             <thead>
+                                <th>Customer Name</th>
                                 <th>Product Name</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Status</th>
                             </thead>
                             <?php
                                 $sql = "SELECT * FROM order_list";
@@ -97,8 +97,10 @@
                                 <tbody>
                                     <tr>
                                         <th><?php echo $data[2]?></th>
-                                        <th><?php echo $data[5]?></th>
+                                        <th><?php echo $data[3]?></th>
                                         <th><?php echo $data[6]?></th>
+                                        <th><?php echo $data[7]?></th>
+                                        <th><?php echo $data[8]?></th>
                                     </tr>
                                 </tbody>
                             <?php }mysqli_stmt_close($stmt); ?>
