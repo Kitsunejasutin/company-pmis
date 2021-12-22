@@ -23,7 +23,7 @@ if(isset($_POST['confirm'])) {
     mysqli_stmt_bind_param($stmt, "ssssss", $employee_name, $product_name, $code, $category, $userQuantity, $price);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../purchaseorder.php?success=added");
+    header("location: ../purchaseorder.php?status=added");
     exit();
 }else{
     header("location: ../purchaseorder.php");

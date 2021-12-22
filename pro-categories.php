@@ -3,32 +3,55 @@
     require_once 'includes/connection.php';
     require_once 'includes/function.php';
     session_start();
-    if(isset($_POST['editcat'])){    
-        $name = $_POST['editcat'];?>
+    if(isset($_POST['rm-category'])){    
+        $column = $_POST['rm-category'];?>
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="close">&times;</span>
-                    <h2>Remove Stock</h2>
+                    <h2>Remove Category?</h2>
                 </div>
                 <div class="modal-body">
-                    <?php $table="category"; $specific="category_name"; $column= $name;?>
                     <form action="includes/stocks.php" method="POST">
-                    <?php $data = (fetchSpecific($connection, $table, $specific, $column)); ?>
-                    <input class="input-table" name="name" value="<?php echo $data['category_name'];?>"required>
-                    <p class="text margin">Category Name<p>
-                    <button type="Submit" class="blue" name="update-category" value="<?php echo $data['id']; ?>">Update</button>
+                        <?php $table ="category"; $specific ="category_name";$data = (fetchSpecific($connection, $table, $specific, $column)); ?>
+                        <input readonly class="input-table disabled" name="name" value="<?php echo $data['category_name'];?>"required>
+                        <p class="text margin">Supplier<p>
+                        <button type="Submit" class="blue" name="remove-category" value="<?php echo $column; ?>">Remove</button>
                     </form>
                 </div>
             </div>
         </div>
-    <script>        
-    var modal = document.getElementById("myModal");
-    var btn = document.getElementById("myBtn");
-    $(function() {
-     $('#myModal').css('display','block');
-    });</script>
+        <script>        
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("myBtn");
+        $(function() {
+         $('#myModal').css('display','block');
+        });</script>
 
+    <?php }elseif(isset($_POST['editcat'])){    
+        $column = $_POST['editcat'];?>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2>Update Category</h2>
+                </div>
+                <div class="modal-body">
+                    <form action="includes/stocks.php" method="POST">
+                        <?php $table ="category"; $specific ="category_name";$data = (fetchSpecific($connection, $table, $specific, $column)); ?>
+                        <input class="input-table" name="name" value="<?php echo $data['category_name'];?>"required>
+                        <p class="text margin">Supplier<p>
+                        <button type="Submit" class="blue" name="update-category" value="<?php echo $data['id']; ?>">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>        
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("myBtn");
+        $(function() {
+         $('#myModal').css('display','block');
+        });</script>
     <?php } ?>
     <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="styles/stocks.css">
@@ -43,7 +66,7 @@
                 <div class="card">
                     <div class="header">
                         <span class="span-header">Categories</span>
-                        <button class="action"><a class="action">Add Category</a></button>
+                        <a href="adding.php?add=category" class="action">Add Category</a>
                         <select class  ="form-control" name="state" id="maxRows">
                             <option value="5000">Show ALL Rows</option>
                             <option value="5">5</option>
@@ -81,7 +104,8 @@
                                         <th><?php echo $data[1];?></th>
                                         <th><?php echo implode("|",fetchStock($connection,$data['1'])); ?></th>
                                         <th><?php echo implode("|",fetchStockPrice($connection,$data['1'])); ?></th>
-                                        <th><button type="Submit" class="action" name="editcat" id ="myBtn" value="<?php echo $data[1]; ?>"><i class="fas fa-edit"></i></button></th>
+                                        <th><button type="Submit" class="action" name="editcat" id ="myBtn" value="<?php echo $data[1]; ?>"><i class="fas fa-edit"></i></button>
+                                        <button type="Submit" class="action" name="rm-category" id ="myBtn" value="<?php echo $data[1]; ?>"><i class="fas fa-trash-alt"></i></button></th>
                                     </tr>
                                 </tbody>
                             <?php }mysqli_stmt_close($stmt); ?>
@@ -99,20 +123,6 @@
 				            </ul>
 				        </nav>
 			        </div>
-                </div>
-            </div>
-            <div id="addModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="close">&times;</span>
-                        <h2>Add Category</h2>
-                    </div>
-                    <div class="modal-body">
-                        <form action="includes/stocks.php" method="POST">
-                            <p class="input"><input type="text" placeholder="Product Category" name="category" required></p>
-                            <button type="Submit" class="btn blue" name="addcat" value="<?php ?>">Add Category</button>
-                        </form>
-                    </div>
                 </div>
             </div>
             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 

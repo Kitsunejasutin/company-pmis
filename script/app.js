@@ -32,19 +32,19 @@ $(window).on('load', function () {
         $('#addModal').css('display', 'none');
     });
 
-    $('#search_text').keypress(function () {
+    $("#query").click(function() {
         $.ajax({
             type: 'POST',
-            url: "includes/search.php",
+            url: "includes/query.php",
             data: {
-                name:$("#search_text").val(),
+                name: $("#stock_search").val(),
             },
             success: function (data) {
-                $('#result').html(data);
+                $('#results').html(data);
             }
         });
     });
-
+ 
     getPagination('#tableData');
 
 
@@ -198,20 +198,6 @@ $(function() {
         id++;
         $(this).prepend('<th>' + id + '</th>');
     });
-});
-    
-    $('#search').change(function () {
-        var id = $(this).val()
-        $.ajax({
-            type: 'POST',
-            url: 'includes/search.php',
-            data: {
-                'id':id
-            },
-            success: function (data) {
-                $('#result').html(data);
-            }
-        });
 });
     
 });

@@ -4,83 +4,110 @@
 
 if(isset($_POST['addcat'])){
     $cat = $_POST['category'];
+    $table = "category";
+    $column = "category_name";
+    $item = $cat;
+    if (itemExists($connection, $table,  $column, $item) !== false) {
+        header("location: ../adding.php?add=category&error=categoryexists");
+        exit();
+    }
     addCategory($connection, $cat);
     
+}elseif(isset($_POST['update-category'])){
+    $name = $_POST['name'];
+    $id = $_POST['update-category'];
+    updateCategory($connection, $name, $id);
+}elseif(isset($_POST['remove-category'])){
+    $name = $_POST['name'];
+    deleteCategory($connection, $name);
 }elseif(isset($_POST['addstock'])){
-    $name = $_POST['product-name'];
+    $name = $_POST['name'];
     $code = $_POST['code'];
     $category = $_POST['category'];
     $quantity = $_POST['quantity'];
     $supplier = $_POST['supplier'];
     $price = $_POST['price'];
+    $table = "stocks";
+    $column = "product_name";
+    $item = $name;
+    if (itemExists($connection, $table,  $column, $item) !== false) {
+        header("location: ../adding.php?add=stock&error=stockexists");
+        exit();
+    }
+
     addStock($connection, $name, $code, $category, $quantity, $supplier, $price);
-}elseif(isset($_POST['addsupp'])){
+}elseif(isset($_POST['addsupplier'])){
     $name = $_POST['supplier'];
-    addSupplier($connection,$name);
+    $price = $_POST['price'];
+    $table = "supplier";
+    $column = "supplier_name";
+    $item = $name;
+    if (itemExists($connection, $table,  $column, $item) !== false) {
+        header("location: ../adding.php?add=supplier&error=supplierexists");
+        exit();
+    }
+
+    addSupplier($connection, $name);
+}elseif(isset($_POST['update-supplier'])){
+    $id = $_POST['update-supplier'];
+    $name = $_POST['name'];
+    updateSupplier($connection,$name, $id);
+}elseif(isset($_POST['remove-supplier'])){
+    $name = $_POST['remove-supplier'];
+    deleteSupplier($connection,$name);
 }elseif(isset($_POST['submit'])){
     session_start();
-    $code = $_POST['product-code'];
-    $category = $_POST['product-category'];
-    $quantity = $_POST['product-quantity'];
-    $userQuantity = $_POST['user-quantity'];
-    $price = $_POST['product-price'];
-    $employee_name = $_SESSION['FName']." ".$_SESSION['MName']." ".$_SESSION['LName']; 
+    $admin = $_POST['admin'];
+    $name = $_POST['name'];
+    $code = $_POST['code'];
+    $category = $_POST['category'];
+    $quantity  = $_POST['quantity'];
+    $supplier = $_POST['supplier'];
+    $price = $_POST['price'];
+    $custom_name = $_POST['customer_name'];
+    $custom_quantity = $_POST['customer_quantity'];
+    $custom_quantity = $_POST['customer_quantity'];
+    $status = $_POST['status'];
+    //echo $admin;
+    //echo $code;
+    //echo $category;
+    //echo $quantity;
+    //echo $supplier;
+    //echo $price;
+    //echo $custom_name;
+    //echo $custom_quantity;
+    //echo $status;
+    date_default_timezone_set('Asia/Manila');
+    $transaction_time = date("Y-m-d");
+        $sql = "SELECT * FROM stocks WHERE product_name=?";
+        $stmt = mysqli_stmt_init($connection);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: ../purchaseorder.php?error=stmtfailed");
+        exit();
+        }
+        mysqli_stmt_bind_param($stmt, "s", $name);
+        mysqli_stmt_execute($stmt);
+                                            
+        $resultData = mysqli_stmt_get_result($stmt);
 
-    include_once 'header.php';
-    require_once 'connection.php';
-    require_once 'function.php';
-    ?>
-	<link rel="stylesheet" href="../styles/header.css">
-    <link rel="stylesheet" href="../styles/stocks.css">
-    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-	<title><?php echo fetchcompanyname($connection); ?></title>
-</head>
-<body>
-<?php
-    include_once 'bars-confirm.php';
-?>
-<div class="info">
-    <div class="card">
-        <div class="header">
-            <span class="span-header">Confirm Order</span>
-            </div>
-                <form action="confirm.php" method="POST">
-                    <div class="header-input">
-                        <input readonly type="text" class="header-input" name="search_text" id="search_text" value=" <?php $sql = 'SELECT product_name FROM stocks WHERE product_category="'.$category.'"'; $result = mysqli_query($connection,$sql); $row = mysqli_fetch_assoc($result); echo $product_name = $row['product_name']; ?>" />
-                    </div>
-                    <div id="result">
-                            <p class="text">Code</p>
-                            <input type="text" class="placeholder disabled" name="product-code" id="product-code" placeholder="Product Code" value="<?php echo $code; ?>">
-                            <p class="text">Category</p>
-                            <input readonly type="text" class="placeholder disabled" name="product-category" id="product-category" placeholder="Product Category" value="<?php echo $category; ?>">
-                            <p class="text">Stock Quantity</p>
-                            <input readonly type="text" class="placeholder disabled" name="product-quantity" id="product-quantity" placeholder="Product Quantity" value="<?php echo $quantity?>">
-                            <p class="text">Price</p>
-                            <input readonly type="text" class="placeholder disabled" name="product-prices" id="product-supplier" placeholder="Product Price" value="<?php echo $price ?>">
-                            <p class="text">User Quantity</p>
-                            <input readonly type="text" class="placeholder disabled" name="user-quantity" id="user-quantity" placeholder="User Quantity" value="<?php echo $userQuantity ?>"><br>
-                            <input type="text" class="hidden" name="product-price" value="<?php $final = $price * $userQuantity; echo $final; ?>"><br>
-                        </div>
-                    <div class="compute">
-                        <p class="text compute">Quantity: <?php echo $userQuantity ?></p>
-                        <p class="text compute">Price: <?php echo $price; ?> </p>
-                        <p class="text compute">------------------</p>
-                        <p class="text compute">Price: <?php $final = $price * $userQuantity; echo $final; ?> </p>
-                        <button type="Submit" class="btn blue margin confirm" name="confirm"><span>Confirm Order</span></button>
-                </form> 
-                    <button type="Submit" class="btn blue margin"><span>Cancel</span></button>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    </div>
-</div>
-    <script src="../script/app.js"></script>
-</body>
-</html>
+        $row = mysqli_fetch_array($resultData);
+        $newquantity  = $row['product_quantity'] - $custom_quantity;
+        $newproductprice = $price * $custom_quantity;                                
+        mysqli_stmt_close($stmt);
+        $sql1 = "UPDATE stocks SET product_quantity=? WHERE product_code=?;";
+        $stmt1 = mysqli_stmt_init($connection);
+        $stmt1 = mysqli_stmt_init($connection);
+        if (!mysqli_stmt_prepare($stmt1, $sql1)) {
+            header("location: ../purchaseorder.php?error=stmtfailedcreate");
+            exit();
+        }
+    
+        mysqli_stmt_bind_param($stmt1, "ss", $newquantity, $code);
+        mysqli_stmt_execute($stmt1);
+        mysqli_stmt_close($stmt1);
+    orderConfirm($connection, $admin, $custom_name, $code, $name, $category, $custom_quantity, $newproductprice, $transaction_time, $status, $newquantity);
 
-<?php }elseif(isset($_POST['update'])){
+}elseif(isset($_POST['update'])){
     $name = $_POST['name'];
     $code = $_POST['code'];
     $category = $_POST['category'];
@@ -88,18 +115,6 @@ if(isset($_POST['addcat'])){
     $supplier = $_POST['supplier'];
     $price = $_POST['price'];
     updateStock($connection, $name, $code, $category, $quantity, $supplier, $price);
-}elseif(isset($_POST['remove'])){
-    $id = $_POST['remove'];
-    echo $id;
-    deleteStock($connection, $id);
-}elseif(isset($_POST['update-category'])){
-    $name = $_POST['name'];
-    $id = $_POST['update-category'];
-    updateCategory($connection, $name, $id);
-}elseif(isset($_POST['remove-category'])){
-    $id = $_POST['remove'];
-    echo $id;
-    deleteStock($connection, $id);
 }else{
     echo "parang may mali";
 }

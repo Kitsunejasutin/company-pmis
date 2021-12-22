@@ -8,6 +8,8 @@
             echo "<span class='error'>There was an error uploading your file!</span>";
         }else if ($_GET["status"] == "emailtaken") {
             echo "<span class='error'>Email is already taken!</span>";
+        }else if ($_GET["status"] == "stockadded") {
+            echo "<span class='error'>Stock Added!</span>";
         }
     }elseif (isset($_GET["error"])){
         if ($_GET["error"] == "stmtfailed"){
@@ -18,5 +20,7 @@
             echo "<span class='error'>There was an error uploading your file!</span>";
         }else if ($_GET["error"] == "emailtaken") {
             echo "<span class='error'>Email is already taken!</span>";
+        }else if ($_GET["error"] == "stockexists") {
+            echo "<span class='error'>Stock is already present!</span>";
         }
     }

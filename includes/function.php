@@ -41,6 +41,29 @@ function emailExists($connection, $email) {
     mysqli_stmt_close($stmt);
 }
 
+function itemExists($connection, $table,  $column, $item) {
+    $sql = "SELECT * FROM $table WHERE $column = ?;";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../index.php?error=stmtfailedexists");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $item);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+}
+
 function createUser($connection, $id, $email, $pwd, $FName, $MName, $LName, $address, $contact) {
     $sql = "INSERT INTO accounts (employee_id, email, pwd, FName, MName, LName, access, employee_status, employ_address, contact) VALUES (?, ?, ?, ?, ?, ?, '1', 'active', ?, ?);";
     $stmt = mysqli_stmt_init($connection);
@@ -54,7 +77,7 @@ function createUser($connection, $id, $email, $pwd, $FName, $MName, $LName, $add
     mysqli_stmt_bind_param($stmt, "ssssssss", $id, $email, $hashedPWD, $FName, $MName, $LName, $address, $contact);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../addemployee.php?success=added");
+    header("location: ../addemployee.php?status=useradded");
     exit();
 }
 
@@ -126,10 +149,10 @@ function timeIn($connection, $id, $time) {
 					$last_id = mysqli_insert_id($connection);
 					$_SESSION['user_id'] = $last_id;
                     $_SESSION['status'] = "timeIn";
-					header("location: ../attendance.php?success=clockin");
+					header("location: ../attendance.php?status=clockin");
 			}
 		}else{
-			header("location: ../attendance.php?status=error");
+			header("location: ../attendance.php?status=somethingwentwrong");
 		}
 	}
 }
@@ -162,7 +185,7 @@ function timeOut($connection, $id, $time) {
 				}
 			}
 		}else{
-			header("location: ../attendance.php?status=error");
+			header("location: ../attendance.php?status=somethingwentwrong");
 		}
 	}	
 }
@@ -191,6 +214,25 @@ function fetchLatestAccount($connection) {
     $stmt = mysqli_stmt_init($connection);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../index.php?error=stmtfailedexists");
+        exit();
+    }
+
+    mysqli_stmt_execute($stmt);
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_array($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+}
+
+function fetchLatestStocks($connection) {
+    $sql = "SELECT product_code FROM stocks ORDER BY product_code DESC LIMIT 1";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../adding.php?add=stock&error=stmtfailedexists");
         exit();
     }
 
@@ -240,7 +282,7 @@ function updateAccess($connection, $access, $id){
     mysqli_stmt_bind_param($stmt, "ss", $access, $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../permissions.php?success=updated");
+    header("location: ../permissions.php?status=accessupdated");
     exit();
 }
 
@@ -255,7 +297,7 @@ function deleteAccount($connection, $id){
     mysqli_stmt_bind_param($stmt, "s", $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../accounts.php?success=deleted");
+    header("location: ../accounts.php?status=accountdeleted");
     exit();
 }
 
@@ -270,7 +312,7 @@ function addCategory($connection, $cat) {
     mysqli_stmt_bind_param($stmt, "s", $cat);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../pro-categories.php?success=added");
+    header("location: ../pro-categories.php?status=categoryadded");
     exit();
 }
 
@@ -285,7 +327,7 @@ function addStock($connection, $name, $code, $category, $quantity, $supplier, $p
     mysqli_stmt_bind_param($stmt, "ssssss", $name, $code, $category, $quantity, $supplier, $price);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../stock_manager.php?success=added");
+    header("location: ../adding.php?add=stock&status=stockadded");
     exit();
 }
 
@@ -371,7 +413,7 @@ function addSupplier($connection, $name) {
     mysqli_stmt_bind_param($stmt, "s", $name);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../suppliers.php?success=added");
+    header("location: ../suppliers.php?status=supplieradded");
     exit();
 }
 
@@ -453,7 +495,7 @@ function updateStock($connection, $name, $code, $category, $quantity, $supplier,
     mysqli_stmt_bind_param($stmt, "sssssss", $name, $code, $category, $quantity, $supplier, $price, $name);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../stock_manager.php?success=updated");
+    header("location: ../stock_manager.php?status=stockupdated");
     exit();
 }
 
@@ -468,7 +510,22 @@ function deleteStock($connection, $id){
     mysqli_stmt_bind_param($stmt, "s", $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../stock_manager.php?success=deleted");
+    header("location: ../stock_manager.php?status=stockdeleted");
+    exit();
+}
+
+function deleteCategory($connection, $name){
+    $sql = "DELETE FROM category WHERE category_name=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../pro-categories.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $name);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../pro-categories.php?status=stockdeleted");
     exit();
 }
 
@@ -483,7 +540,7 @@ function updateCategory($connection, $name, $id) {
     mysqli_stmt_bind_param($stmt, "ss", $name, $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: ../pro-categories.php?success=updated");
+    header("location: ../pro-categories.php?status=categoryupdated");
     exit();
 }
 
@@ -506,5 +563,51 @@ function countAll($connection, $column, $table) {
     }
 
     mysqli_stmt_close($stmt);
+    exit();
+}
+
+function deleteSupplier($connection, $name){
+    $sql = "DELETE FROM supplier WHERE supplier_name=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../suppliers.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $name);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../suppliers.php?status=supplierdeleted");
+    exit();
+}
+
+
+function updateSupplier($connection, $name, $id) {
+    $sql = "UPDATE supplier SET supplier_name=? WHERE id=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../suppliers.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ss", $name, $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../suppliers.php?status=supplierupdated");
+    exit();
+}
+
+function orderConfirm($connection, $admin, $custom_name, $name, $code, $category, $custom_quantity, $newproductprice, $transaction_time, $status, $newquantity) {
+    $sql = "INSERT INTO order_list (employee_name, customer_name, product_name, product_code, product_category, userquantity, product_price, transaction_time, payment_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../purchaseorder.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "sssssssss", $admin, $custom_name, $code, $name, $category, $custom_quantity, $newproductprice, $transaction_time, $status);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../purchaseorder.php?status=purchased");
     exit();
 }

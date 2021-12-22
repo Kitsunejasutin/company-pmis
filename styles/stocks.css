@@ -1,6 +1,6 @@
 div.card {
     width: 100%;
-    height: 690px;
+    height: 675px;
     background-color: rgb(242, 248, 255);
     margin: auto;
     text-decoration: none;
@@ -121,46 +121,14 @@ button.confirm {
     font-weight: bold;
 }
 
-input {
-    border-top-style: hidden;
-    border-right-style: hidden;
-    border-left-style: hidden;
-    background-color: transparent;
-    color: rgb(0, 0, 0);
-    font-size: 20px;
-    width: 400px;
-}
-
-input:focus {
-    outline: none;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
-    -webkit-text-fill-color: rgb(0, 0, 0) !important;
-}
-
 input.header-input {
     margin-left: 480px;
-    text-align: center;
-}
-
-input.placeholder {
-    margin: 20px;
     text-align: center;
 }
 
 input.disabled {
     border-bottom-style: hidden;
     background: #dddddd;
-}
-
-input.input-table {
-    width: 20%;
-    text-align: center;
 }
 
 p.input {
@@ -188,7 +156,6 @@ p.margin {
     padding-top: 100px;
     left: 0;
     top: 0;
-    margin-left:260px;
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -199,11 +166,10 @@ p.margin {
 .modal-content {
     position: relative;
     background-color: #fefefe;
-    top: 180px;
+    top: 140px;
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 50%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -212,7 +178,7 @@ p.margin {
 }
 
 div.table {
-    width: 95%;
+    width: 60%;
     top: 70px;
 }
 
@@ -269,18 +235,33 @@ span.error {
     font-size: 25px;
 }
 
-select {
-    width: 60%;
+.input-table {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
     font-size: 20px;
-    height: 35px;
+    width: 40%;
     text-align: center;
 }
 
-select.category {
-    width: 20%;
-    height: 30px;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: rgb(0, 0, 0) !important;
 }
 
+select.category, .supplier {
+    width: 30%;
+    font-size: 20px;
+}
+
+input:focus {
+    outline: none;
+}
 nav {
     display: block;
 }

@@ -18,7 +18,7 @@
                         <p class="text margin">Product Name<p>
                         <input class="input-table" name="code" value="<?php echo $data1['product_code'];?>"required>
                         <p class="text margin">Product Code<p>
-                        <select name="category" class="category">
+                        <select name="category" class="supplier">
                                 <?php
                                     $sql = "SELECT * FROM category";
                                     $stmt = mysqli_stmt_init($connection);
@@ -37,8 +37,23 @@
                             </select></br><p class="text margin">Product Supplier<p>
                         <input name="quantity" class="input-table"value="<?php echo $data1['product_quantity'];?>"required>
                         <p class="text margin">Product Quantity<p>
-                        <input name="supplier" class="input-table"value="<?php echo $data1['product_supplier'];?>"required>
-                        <p class="text margin">Product Supplier<p>
+                        <select name="supplier" class="category">
+                                <?php
+                                    $sql = "SELECT * FROM supplier";
+                                    $stmt = mysqli_stmt_init($connection);
+                                    if (!mysqli_stmt_prepare($stmt, $sql)) {
+                                        header("location: ../stock_manager.php?error=stmtfailed");
+                                        exit();
+                                    }
+                                    mysqli_stmt_execute($stmt);
+
+                                    $resultData = mysqli_stmt_get_result($stmt);
+
+                                    while($data = mysqli_fetch_array($resultData)){
+                                ?>
+                                    <option value="<?php echo $data['supplier_name']; ?>"><?php echo $data['supplier_name']; ?></option>
+                                <?php }mysqli_stmt_close($stmt); ?>
+                            </select><p class="text margin">Product Supplier<p>
                         <input name="price" class="input-table"value="<?php echo $data1['product_price'];?>" required>
                         <p class="text margin">Product Price<p><br>
                         <button type="Submit" class="blue" name="update" value="<?php echo $name; ?>">Update</button>
@@ -101,7 +116,7 @@
                 <div class="card">
                     <div class="header">
                         <span class="span-header">Stocks</span>
-                        <a class="action">Add Stock</a>
+                        <a href="adding.php?add=stock" class="action">Add Stock</a>
                         <select class  ="form-control" name="state" id="maxRows">
                             <option value="5000">Show ALL Rows</option>
                             <option value="5">5</option>
@@ -164,57 +179,6 @@
 				            </ul>
 				        </nav>
 			        </div>
-                </div>
-            </div>
-            <div id="addModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="close">&times;</span>
-                        <h2>Add Stock</h2>
-                    </div>
-                    <div class="modal-body">
-                        <form action="includes/stocks.php" method="POST">
-                            <p class="input"><input type="text" placeholder="Product Name" name="product-name" required></p>
-                            <p class="input"><input type="text" placeholder="Product Code" name="code" required></p>
-                            <select name="category">
-                                <?php
-                                    $sql = "SELECT * FROM category";
-                                    $stmt = mysqli_stmt_init($connection);
-                                    if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("location: ../stock_manager?error=stmtfailed");
-                                        exit();
-                                    }
-                                    mysqli_stmt_execute($stmt);
-
-                                    $resultData = mysqli_stmt_get_result($stmt);
-
-                                    while($data = mysqli_fetch_array($resultData)){
-                                ?>
-                                    <option value="<?php echo $data['category_name']; ?>"><?php echo $data['category_name']; ?></option>
-                                <?php }mysqli_stmt_close($stmt); ?>
-                            </select>
-                            <p class="input"><input type="text" placeholder="Product Quantity" name="quantity" required></p>
-                            <select name="supplier">
-                                <?php
-                                    $sql = "SELECT * FROM supplier";
-                                    $stmt = mysqli_stmt_init($connection);
-                                    if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("location: ../stock_manager.php?error=stmtfailed");
-                                        exit();
-                                    }
-                                    mysqli_stmt_execute($stmt);
-
-                                    $resultData = mysqli_stmt_get_result($stmt);
-
-                                    while($data = mysqli_fetch_array($resultData)){
-                                ?>
-                                    <option value="<?php echo $data['supplier_name']; ?>"><?php echo $data['supplier_name']; ?></option>
-                                <?php }mysqli_stmt_close($stmt); ?>
-                            </select>
-                            <p class="input"><input type="text" placeholder="Product Price" name="price" required></p>
-                            <button type="Submit" class="btn blue" name="addstock" value="<?php ?>">Add Stock</button>
-                        </form>
-                    </div>
                 </div>
             </div>
             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 

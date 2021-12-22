@@ -4,19 +4,43 @@
     require_once 'includes/function.php';
     session_start();
     if(isset($_POST['remove'])){    
-        $id = $_POST['remove'];?>
+        $column = $_POST['remove'];?>
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="close">&times;</span>
-                    <h2>Remove Employee?</h2>
+                    <h2>Remove Supplier?</h2>
                 </div>
                 <div class="modal-body">
                     <form action="includes/stocks.php" method="POST">
-                        <?php $data = (fetchDataid($connection,$id)); $id = $data['employee_id']; $name = $data['FName']." ".$data['MName']." ".$data['LName']; $access=$data['access'];?>
-                        <p class="text">Remove the following Employee?</p><br>
-                        <p class="text"><?php echo $id;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $name;?></p><br>
-                        <button type="Submit" class="blue" name="remove" value="<?php echo $id; ?>">Remove</button>
+                        <?php $table ="supplier"; $specific ="supplier_name";$data = (fetchSpecific($connection, $table, $specific, $column)); ?>
+                        <input readonly class="input-table disabled" name="name" value="<?php echo $data['supplier_name'];?>"required>
+                        <p class="text margin">Supplier<p>
+                        <button type="Submit" class="blue" name="remove-supplier" value="<?php echo $column; ?>">Remove</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>        
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("myBtn");
+        $(function() {
+         $('#myModal').css('display','block');
+        });</script>
+    <?php }elseif(isset($_POST['editsup'])){    
+        $column = $_POST['editsup'];?>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2>Update Supplier</h2>
+                </div>
+                <div class="modal-body">
+                    <form action="includes/stocks.php" method="POST">
+                        <?php $table ="supplier"; $specific ="supplier_name";$data = (fetchSpecific($connection, $table, $specific, $column)); ?>
+                        <input class="input-table" name="name" value="<?php echo $data['supplier_name'];?>"required>
+                        <p class="text margin">Supplier<p>
+                        <button type="Submit" class="blue" name="update-supplier" value="<?php echo $data['id']; ?>">Update</button>
                     </form>
                 </div>
             </div>
@@ -41,7 +65,7 @@
                 <div class="card">
                     <div class="header">
                         <span class="span-header">Suppliers</span>
-                        <button class="action"><a class="action">Add Supplier</a></button>
+                        <a href="adding.php?add=supplier" class="action">Add Supplier</a>
                         <select class  ="form-control" name="state" id="maxRows">
                             <option value="5000">Show ALL Rows</option>
                             <option value="5">5</option>
@@ -77,7 +101,8 @@
                                     <tr>
                                         <th><?php echo $data[1];?></th>
                                         <th><?php echo implode("|",fetchSupplier($connection,$data['1'])); ?></th>
-                                        <th><button type="Submit" class="action" name="editsupp" id ="myBtn" value="<?php echo $data[1]; ?>"><i class="fas fa-edit"></i></button></th>
+                                        <th><button type="Submit" class="action" name="editsup" id ="myBtn" value="<?php echo $data[1]; ?>"><i class="fas fa-edit"></i></button>
+                                        <button type="Submit" class="action" name="remove" id ="myBtn" value="<?php echo $data[1]; ?>"><i class="fas fa-trash-alt"></i></button></th>
                                     </tr>
                                 </tbody>
                             <?php }mysqli_stmt_close($stmt); ?>
@@ -96,20 +121,6 @@
 				            </ul>
 				        </nav>
 			        </div>
-                </div>
-            </div>
-            <div id="addModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="close">&times;</span>
-                        <h2>Add Supplier</h2>
-                    </div>
-                    <div class="modal-body">
-                        <form action="includes/stocks.php" method="POST">
-                            <p class="input"><input type="text" placeholder="Supplier Name" name="supplier" required></p>
-                            <button type="Submit" class="btn blue" name="addsupp" value="<?php ?>">Add Supplier</button>
-                        </form>
-                    </div>
                 </div>
             </div>
             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
