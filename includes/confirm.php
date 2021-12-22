@@ -16,7 +16,7 @@ if(isset($_POST['confirm'])) {
     $sql = "INSERT INTO order_list (employee_name, product_name, product_code, product_category, userquantity, product_price) VALUES (?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($connection);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-    header("location: ../stock_manager.php?error=stmtfailedcreate");
+    header("location: ../purchaseorder.php?error=stmtfailedcreate");
     exit();
 }
 

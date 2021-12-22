@@ -65,7 +65,7 @@
                                 $sql = "SELECT * FROM accounts WHERE employee_status='active'";
                                 $stmt = mysqli_stmt_init($connection);
                                 if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                    header("location: ../index.php?error=stmtfailedexists");
+                                    header("location: ../accounts.php?error=stmtfailedexists");
                                     exit();
                                 }
                                 mysqli_stmt_execute($stmt);

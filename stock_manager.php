@@ -23,7 +23,7 @@
                                     $sql = "SELECT * FROM category";
                                     $stmt = mysqli_stmt_init($connection);
                                     if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("location: ../index.php?error=stmtfailedexists");
+                                        header("location: ../stock_manager.php?error=stmtfailed");
                                         exit();
                                     }
                                     mysqli_stmt_execute($stmt);
@@ -128,7 +128,7 @@
                                 $sql = "SELECT * FROM stocks";
                                 $stmt = mysqli_stmt_init($connection);
                                 if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                    header("location: ../index.php?error=stmtfailedexists");
+                                    header("location: ../stock_manager.php?error=stmtfailed");
                                     exit();
                                 }
                                 mysqli_stmt_execute($stmt);
@@ -181,7 +181,7 @@
                                     $sql = "SELECT * FROM category";
                                     $stmt = mysqli_stmt_init($connection);
                                     if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("location: ../index.php?error=stmtfailedexists");
+                                        header("location: ../stock_manager?error=stmtfailed");
                                         exit();
                                     }
                                     mysqli_stmt_execute($stmt);
@@ -199,7 +199,7 @@
                                     $sql = "SELECT * FROM supplier";
                                     $stmt = mysqli_stmt_init($connection);
                                     if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("location: ../index.php?error=stmtfailedexists");
+                                        header("location: ../stock_manager.php?error=stmtfailed");
                                         exit();
                                     }
                                     mysqli_stmt_execute($stmt);

@@ -22,7 +22,7 @@
                             $sql = "SELECT * FROM accounts";
                             $stmt = mysqli_stmt_init($connection);
                             if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                header("location: ../index.php?error=stmtfailedexists");
+                                header("location: ../employ_trans.php?error=stmtfailedexists");
                                 exit();
                             }
                             mysqli_stmt_execute($stmt);
