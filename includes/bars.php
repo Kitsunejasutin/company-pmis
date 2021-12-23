@@ -28,8 +28,7 @@
             </ul>
             <ul id="categories">
                 <li class="categories"><a><i class="fas fa-file-export"></i>Data Export<i class="arrow right"></i></a></li>
-                <a href="export.php?export=transaction"><li class="dropdown"><span>Transaction Export</span></li></a>
-                <a href="export.php?export=supplier"><li class="dropdown"><span>Supplier Export</span></li></a>
+                <a href="export.php"><li class="dropdown"><span>Transaction Export</span></li></a>
             </ul>
             <div class="social_media">
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
