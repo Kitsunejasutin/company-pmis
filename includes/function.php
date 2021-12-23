@@ -18,6 +18,29 @@ function pwdMatch($pwd, $pwdRepeat) {
     return $result;
 }
 
+function verifystatus($connection, $id) {
+    $sql = "SELECT * FROM timeclock WHERE ID = ?;";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../index.php?error=stmtfailedexists");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $id);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_array($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+}
+
 function emailExists($connection, $email) {
     $sql = "SELECT * FROM accounts WHERE email = ?;";
     $stmt = mysqli_stmt_init($connection);
@@ -102,6 +125,7 @@ function loginUser($connection, $email, $pwd) {
             $_SESSION["LName"] = $emailExists["LName"];
             $_SESSION["FName"] = $emailExists["FName"];
             $_SESSION["MName"] = $emailExists["MName"];
+            $_SESSION["ID"] = $emailExists["employee_id"];
             header("location: ../dashboard.php" );
             exit();
         }elseif ($_SESSION['access'] == "0"){
@@ -110,6 +134,7 @@ function loginUser($connection, $email, $pwd) {
             $_SESSION["FName"] = $emailExists["FName"];
             $_SESSION["MName"] = $emailExists["MName"];
             $_SESSION["email"] = $emailExists["email"];
+            $_SESSION["ID"] = $emailExists["employee_id"];
             $sql = "SELECT company_name FROM company_info"; $result = mysqli_query($connection, $sql); $column = mysqli_fetch_array($result);
             if ($column['company_name'] == ""){header("location: ../registration1.php");}else {header("location: ../dashboard.php");}
             exit();
@@ -131,7 +156,7 @@ function timeIn($connection, $id, $time) {
 		$array[] = $row;
 	}
 	foreach ($array as $data){
-		if($id == $data['id']){
+		if($id == $data['employee_id']){
 			$sql = "SELECT * FROM timeclock WHERE ID='". $id ."';";
 			$result = mysqli_query($connection, $sql);
 			while ($row = mysqli_fetch_assoc($result)){
@@ -144,11 +169,10 @@ function timeIn($connection, $id, $time) {
 				}else{
 					$name = $data['FName'] ." ". $data['LName'];
 					$sql = "INSERT INTO timeclock (ID, verify_status, employee_name, time_in) VALUES ('$id', 'TimeIn','$name', '$time');";
-					$execute = mysqli_query($connection, $sql);
+					mysqli_query($connection, $sql);
 					session_start();
 					$last_id = mysqli_insert_id($connection);
 					$_SESSION['user_id'] = $last_id;
-                    $_SESSION['status'] = "timeIn";
 					header("location: ../attendance.php?status=clockin");
 			}
 		}else{
@@ -164,9 +188,9 @@ function timeOut($connection, $id, $time) {
 		$array[] = $row;
 	}
 	foreach ($array as $data){
-		if($id == $data['id']){
+		if($id == $data['employee_id']){
 			session_start();
-			$sql = "SELECT * FROM timeclock WHERE id_key='". $_SESSION['user_id'] ."'";
+			$sql = "SELECT * FROM timeclock WHERE ID='". $_SESSION['ID'] ."'";
 			$result = mysqli_query($connection, $sql);
 			while ($row = mysqli_fetch_assoc($result)){
 				$array[] = $row;
@@ -176,11 +200,21 @@ function timeOut($connection, $id, $time) {
 					header("location: ../attendance.php?status=clockoutalready");
 					exit();
 				}elseif($datas['verify_status'] == "TimeIn"){
-					$name = $data['FName'] ." ". $data['LName'];
-					$sql = "UPDATE timeclock SET verify_status='TimeOut', time_out='". $time ."' WHERE id_key='". $_SESSION['user_id'] ."'";
-					$execute = mysqli_query($connection, $sql);
-                    session_start();
-                    $_SESSION['status'] = "timeOut";
+					$sql1 = "UPDATE timeclock SET verify_status='TimeOut', time_out='". $time ."' WHERE ID='". $_SESSION['ID'] ."'";
+                    $sql2 = "SELECT * FROM timeclock WHERE ID='". $_SESSION['ID'] ."';";
+                    $result = mysqli_query($connection, $sql2);
+                    $row = mysqli_fetch_assoc($result);
+                    $time_in = $row['time_in'];
+                    $ID = $row['ID'];
+                    $employee_name = $row['employee_name'];
+                    date_default_timezone_set('Asia/Manila');
+                    $time_out = date("Y-m-d H:i:s");
+                    $sql3 = "INSERT INTO timeclock_history (ID, verify_status, employee_name, time_in, time_out) VALUES ('$ID','TimeOut','$employee_name','$time_in','$time_out');";
+                    $sql4 = "DELETE FROM timeclock WHERE ID='". $_SESSION['ID'] ."'";
+					mysqli_query($connection, $sql1);
+                    mysqli_query($connection, $sql2);
+                    mysqli_query($connection, $sql3);
+                    mysqli_query($connection, $sql4);
 					header("location: ../attendance.php?status=clockout");
 				}
 			}

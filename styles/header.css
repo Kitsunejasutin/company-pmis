@@ -13,6 +13,10 @@ span#id {
   visibility: hidden;
 }
 
+input.hidden {
+  display: none;
+}
+
 body{
   background-color: #eef3ff;
 }

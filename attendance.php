@@ -39,16 +39,28 @@
 				}
 			</script>
 			<!-- Employee ID Input -->
-	  		<div align="center">
-	  			<input style="font-size: 40pt; height:100px; width:400px;" name="EmployeeIDinput" type="tel" placeholder="Employee ID #" class="form-control input-md" required=""/></br>
-	  			<span class="help-block">Enter ID # Above</span>
-  			</div>
-		
+	  			<input style="font-size: 40pt; height:100px; width:400px;" class="hidden" name="EmployeeIDinput" type="tel" value="<?php echo $_SESSION['ID']; ?>" class="form-control input-md" required=""/></br>
+			  <?php ?>
 			<!-- Button -->
 			<div align = "center">
 				<div align="center">
-					<button id='TimeIN-btn' class="blue" style='width:100px; height:100px; margin:20px; font-size:16pt; <?php if ($_SESSION['status'] == "timeIn") echo "background-color:yellowgreen;" ?>' name='TimeIN-btn' class='btn btn-success' value='-IN'>Time<br />IN</button>
-					<button id='TimeOUT-btn' class="blue" style='width:100px; height:100px; margin:20px; font-size:16pt; <?php if ($_SESSION['status'] == "timeOut") echo "background-color:yellowgreen;" ?>' name='TimeOUT-btn' class='btn btn-danger' value='-OUT'>Time<br />OUT</button>
+				<button id='TimeIN-btn' class="blue" style='width:100px; height:100px; margin:20px; font-size:16pt; <?php 
+			$id = $_SESSION['ID']; 
+			$data = verifystatus($connection, $id); 
+			if ($data === false) {
+				echo "<br>TimeOut";
+			}else{
+				if ($data['verify_status'] == "TimeIn") {
+					echo "background-color:yellowgreen;";
+				}else {
+					echo "<br>TimeOut";
+				}
+			} ?>' name='TimeIN-btn' class='btn btn-success' value='-IN'>Time<br />IN</button>
+					<button id='TimeOUT-btn' class="blue" style='width:100px; height:100px; margin:20px; font-size:16pt; <?php $id = $_SESSION['ID']; 
+			$data = verifystatus($connection, $id); 
+			if ($data === false) {
+				echo "background-color:yellowgreen;";
+			} ?>' name='TimeOUT-btn' class='btn btn-danger' value='-OUT'>Time<br />OUT</button>
 				</div>
 			</div>
 		</fieldset>
