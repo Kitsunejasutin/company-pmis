@@ -262,6 +262,7 @@ select.category, .supplier {
 input:focus {
     outline: none;
 }
+
 nav {
     display: block;
 }

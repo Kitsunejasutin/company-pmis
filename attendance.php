@@ -65,6 +65,7 @@
 			</div>
 		</fieldset>
 	</form>
+	<a href="attendance-record.php"><button id='TimeOUT-btn' class="blue" style='width:230px; height:80px; font-size:16pt; ' name='TimeOUT-btn' class='btn btn-danger' value='-OUT'>Attendance History</button></a>
 </div>
 <?php 
 	include_once 'includes/footer.php';

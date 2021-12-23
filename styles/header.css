@@ -344,3 +344,143 @@ button.blue {
 .container .main_content .info div{
   margin-bottom: 20px;
 }
+
+table,th,tr,td {
+  text-align: center;
+  margin-left: 100px;
+}
+
+table {
+  margin: auto;
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.171);
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px gray;
+  background-color: white;
+  text-align: left;
+}
+
+table#tableData {
+  height: 100px;
+}
+
+thead {
+  box-shadow: 0 5px 10px gray;
+}
+
+th {
+  border: 1px solid rgba(0, 0, 0, 0.075);
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.7rem;
+}
+
+a {
+  color: black;;
+}
+
+a.action {
+  padding: .5rem;
+  background-color: gray;
+  text-align: center;
+  color: #fff;
+  border-radius: 6px;
+}
+
+a.action:hover {
+  background-color: rgb(97, 102, 88);
+  cursor: pointer;
+}
+
+a.categories {
+  left: 605px;
+}
+
+nav {
+  display: block;
+}
+
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+.pagination>li {
+  display: inline;
+}
+
+.pagination>li>a, .pagination>li>span {
+  position: relative;
+  float: left;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  width: 50%;
+  text-align: center;
+}
+
+.pagination>li:first-child>span {
+  margin-left: 0;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.pagination>.active>span{
+  color: #fff;
+  cursor: default;
+  background-color: #337ab7;
+  border-color: #337ab7;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+button.action {
+  border: none;
+  outline: none;
+}
+
+button.btn {
+  width: 170px;
+  font-size: 15px;
+  height: 45px;
+}
+
+button.margin {
+  margin-left: 1140px;
+  top: -95px;
+}
+
+button.confirm {
+  top: -100px
+}
+
+.paging-nav {
+  text-align: right;
+  padding-top: 10px;
+}
+
+.paging-nav a {
+  margin: auto 1px;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1px 7px;
+  background: #91b9e6;
+  color: white;
+  border-radius: 3px;
+}
+
+.fa-edit, .fa-trash-alt {
+  font-size: 25px;
+}
