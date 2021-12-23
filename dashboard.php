@@ -49,12 +49,14 @@
                                 <th>Time In</th>
                             </thead>
                             <?php
-                                $sql = "SELECT * FROM timeclock";
+                                $status = "TimeIn";
+                                $sql = "SELECT * FROM timeclock WHERE verify_status=?";
                                 $stmt = mysqli_stmt_init($connection);
                                 if (!mysqli_stmt_prepare($stmt, $sql)) {
                                     header("location: ../dashboard.php?error=stmtfailedexists");
                                     exit();
                                 }
+                                mysqli_stmt_bind_param($stmt, "s", $status);
                                 mysqli_stmt_execute($stmt);
 
                                 $resultData = mysqli_stmt_get_result($stmt);
@@ -100,7 +102,7 @@
                                         <th><?php echo $data[3]?></th>
                                         <th><?php echo $data[6]?></th>
                                         <th><?php echo $data[7]?></th>
-                                        <th><?php echo $data[8]?></th>
+                                        <th><?php echo $data[9]?></th>
                                     </tr>
                                 </tbody>
                             <?php }mysqli_stmt_close($stmt); ?>
