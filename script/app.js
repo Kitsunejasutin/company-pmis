@@ -44,7 +44,20 @@ $(window).on('load', function () {
             }
         });
     });
- 
+    
+    $('#search').change(function () {
+        var id = $(this).val()
+        $.ajax({
+            type: 'POST',
+            url: 'includes/search.php',
+            data: {
+                'id':id
+            },
+            success: function (data) {
+                $('#result').html(data);
+            }
+        });
+});
     getPagination('#tableData');
 
 
