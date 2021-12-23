@@ -518,15 +518,15 @@ function fetchSpecific($connection, $table, $specific, $column) {
 
 }
 
-function updateStock($connection, $name, $code, $category, $quantity, $supplier, $price){
-    $sql = "UPDATE stocks SET product_name=?, product_code=?, product_category=?, product_quantity=?, product_supplier=?, product_price=? WHERE product_name=?";
+function updateStock($connection, $name, $code, $category, $quantity, $supplier, $price, $id){
+    $sql = "UPDATE stocks SET product_name=?, product_code=?, product_category=?, product_quantity=?, product_supplier=?, product_price=? WHERE product_code=?";
     $stmt = mysqli_stmt_init($connection);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../stock_manager.php?error=stmtfailedcreate");
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "sssssss", $name, $code, $category, $quantity, $supplier, $price, $name);
+    mysqli_stmt_bind_param($stmt, "sssssss", $name, $code, $category, $quantity, $supplier, $price, $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../stock_manager.php?status=stockupdated");

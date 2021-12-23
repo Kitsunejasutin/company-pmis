@@ -56,7 +56,7 @@
                             </select><p class="text margin">Product Supplier<p>
                         <input name="price" class="input-table"value="<?php echo $data1['product_price'];?>" required>
                         <p class="text margin">Product Price<p><br>
-                        <button type="Submit" class="blue" name="update" value="<?php echo $name; ?>">Update</button>
+                        <button type="Submit" class="blue" name="update" value="<?php echo $data1['product_code']; ?>">Update</button>
                     </form>
                 </div>
             </div>

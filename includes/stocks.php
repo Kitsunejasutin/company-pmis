@@ -108,13 +108,17 @@ if(isset($_POST['addcat'])){
     orderConfirm($connection, $admin, $custom_name, $code, $name, $category, $custom_quantity, $newproductprice, $transaction_time, $status, $newquantity);
 
 }elseif(isset($_POST['update'])){
+    $id = $_POST['update'];
     $name = $_POST['name'];
     $code = $_POST['code'];
     $category = $_POST['category'];
     $quantity = $_POST['quantity'];
     $supplier = $_POST['supplier'];
     $price = $_POST['price'];
-    updateStock($connection, $name, $code, $category, $quantity, $supplier, $price);
+    updateStock($connection, $name, $code, $category, $quantity, $supplier, $price, $id);
+}elseif(isset($_POST['remove'])){
+    $id = $_POST['remove'];
+    deleteStock($connection, $id);
 }else{
     echo "parang may mali";
 }
