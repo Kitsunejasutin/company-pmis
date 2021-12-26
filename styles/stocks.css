@@ -6,6 +6,7 @@ div.card {
     text-decoration: none;
     justify-content: center;
     align-items: center;
+    overflow: auto;
     box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);
     -webkit-box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);
     -moz-box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);

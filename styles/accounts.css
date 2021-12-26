@@ -4,6 +4,7 @@ div.card {
     background-color: rgb(242, 248, 255);
     margin: auto;
     text-decoration: none;
+    overflow: auto;
     box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);
     -webkit-box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);
     -moz-box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);

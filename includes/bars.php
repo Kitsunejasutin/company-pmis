@@ -7,10 +7,18 @@
             </h2>
             <ul id="categories">
                 <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
-                <li class="categories"><a><i class="fas fa-boxes"></i>Stocks<i class="arrow right"></i></a></li>
-                <a href="stock_manager.php"><li class="dropdown"><span>Stock Manager</span></i></li></a>
-                <a href="pro-categories.php"><li class="dropdown"><span>Product Categories</span></i></li></a>
-                <a href="purchaseorder.php"><li class="dropdown"><span>Purchase Order</span></i></li></a>
+            </ul>
+            <ul id="categories">
+                <li class="categories"><a><i class="fas fa-file-export"></i>Project<i class="arrow right"></i></a></li>
+                <a href="addproject.php"><li class="dropdown"><span>Add Project</span></li></a>
+                <a href="project.php"><li class="dropdown"><span>Manage Projects</span></li></a>
+                <a href="todo.php"><li class="dropdown"><span>To Do List</span></li></a>
+            </ul>
+            <ul id="categories">
+                <li class="categories"><a><i class="fas fa-boxes"></i>Inventory<i class="arrow right"></i></a></li>
+                <a href="stock_manager.php"><li class="dropdown"><span>Inventory Manager</span></i></li></a>
+                <a href="pro-categories.php"><li class="dropdown"><span>Inventory Categories</span></i></li></a>
+                <a href="purchaseorder.php"><li class="dropdown"><span>Restock Inventory</span></i></li></a>
                 <a href="suppliers.php"><li class="dropdown"><span>Suppliers</span></i></li></a>
             </ul>
             <ul id="categories">
@@ -18,6 +26,7 @@
                 <a href="attendance.php"><li class="dropdown account"><span>Attendance</span></li></a>
                 <?php if ($_SESSION["access"] == "0") { ?>
                 <a href="permissions.php"><li class="dropdown"><span>Permissions</span></i></li></a>
+                <a href="assign.php"><li class="dropdown"><span>Assign Employee</span></li></a>
                 <a href="accounts.php"><li class="dropdown"><span>Manage Accounts</span></li></a>
                 <a href="addemployee.php"><li class="dropdown"><span>Add Employees</span></li></a>
                 <?php }else{} ?>

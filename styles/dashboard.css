@@ -50,11 +50,13 @@ div.card {
 .fourth{
     background-color: blanchedalmond;
     border-radius: 5px;
+    overflow: auto;
 }
 
 .fifth {
     background-color: rgba(228, 223, 216, 0.74);
     border-radius: 5px;
+    overflow: auto;
 }
 
 .fa-cubes, .fa-user-check, .fa-parachute-box {

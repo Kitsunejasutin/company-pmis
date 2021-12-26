@@ -17,14 +17,14 @@
                 <div class="header">
                     <div class="row">
                         <div class="column first">
-                            <div class=""><i class="fas fa-cubes"></i><p class="text">Stocks</p></div>
+                            <div class=""><i class="fas fa-cubes"></i><p class="text">Inventory</p></div>
                             <p class="align-right"><?php 
                             $column = "product_name";
                             $table = "stocks";
                             echo implode("|",countAll($connection, $column, $table)); ?></p>
                         </div>
                         <div class="column second">
-                            <div class=""><i class="fas fa-user-check"></i><p class="text">Employees</p></div>
+                            <div class=""><i class="fas fa-user-check"></i><p class="text">Collaboration</p></div>
                             <p class="align-right"><?php 
                             $column = "employee_id";
                             $table = "accounts";
@@ -74,7 +74,7 @@
                         </table>
                     </div>
                     <div class="fifth">
-                        <p class="header">Orders</p>
+                        <p class="header">Transactions</p>
                         <table class="tabletwo">
                             <thead>
                                 <th>Customer Name</th>

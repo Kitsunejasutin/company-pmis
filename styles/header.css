@@ -24,6 +24,7 @@ body{
 .container{
   display: flex;
   position: relative;
+  overflow: auto;
 }
 
 .container .sidebar{
@@ -203,6 +204,7 @@ body{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  cursor: pointer;
 }
 
 .container .main_content .topbar .account .user-icon {
