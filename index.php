@@ -35,8 +35,6 @@
                 </form>
                 <h6 class="line-on-side text-muted font-small-3">
                 </h6>
-                <span>Are you a Client?</span>
-                <button class="btn grey"><span>LogIn</span></button>
             </div>
         </div>
     </div>

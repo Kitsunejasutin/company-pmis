@@ -37,7 +37,7 @@
             
                     if ($sql) {
                         unset($_SESSION['info']);
-                        echo 'Data has been saved succesfully';
+                        header("Location: dashboard.php");
                     }
                 }else {
                     header("Location: registration2.php?status=imagetoobig");
