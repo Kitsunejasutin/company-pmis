@@ -104,6 +104,47 @@ function createUser($connection, $id, $email, $pwd, $FName, $MName, $LName, $add
     exit();
 }
 
+function clientExists($connection, $email) {
+    $sql = "SELECT * FROM clients WHERE client_email = ?;";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../index.php?error=stmtfailedexists");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+}
+
+function addClient($connection, $id, $name, $email, $pwd, $phone, $address, $group) {
+    $sql = "INSERT INTO clients (client_id, client_name, client_email, client_password, client_contact, client_address ,client_group) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../adding.php?add=client&error=stmtfailedcreate");
+        exit();
+    }
+
+    $hashedPWD = password_hash($pwd, PASSWORD_DEFAULT);
+
+    mysqli_stmt_bind_param($stmt, "sssssss", $id, $name, $email, $hashedPWD, $phone, $address, $group);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../adding.php?add=client&status=clientadded");
+    exit();
+}
+
+
 function loginUser($connection, $email, $pwd) {
     $emailExists = emailExists($connection, $email);
 
@@ -281,6 +322,44 @@ function fetchLatestStocks($connection) {
     }
 }
 
+function fetchLatestProject($connection) {
+    $sql = "SELECT project_id FROM projects ORDER BY project_id DESC LIMIT 1";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../adding.php?add=project&error=stmtfailedexists");
+        exit();
+    }
+
+    mysqli_stmt_execute($stmt);
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_array($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+}
+
+function fetchLatestClient($connection) {
+    $sql = "SELECT client_id FROM clients ORDER BY client_id DESC LIMIT 1";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../adding.php?add=client&error=stmtfailedexists");
+        exit();
+    }
+
+    mysqli_stmt_execute($stmt);
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_array($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+}
+
 function fetchDataid($connection, $id){
     $sql = "SELECT employee_id,FName, MName, LName, access FROM accounts WHERE employee_id=?;";
     $stmt = mysqli_stmt_init($connection);
@@ -302,7 +381,29 @@ function fetchDataid($connection, $id){
 
     mysqli_stmt_close($stmt);
     exit();
+}
 
+function fetchClientid($connection, $id){
+    $sql = "SELECT * FROM clients WHERE client_id=?;";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../permissions.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $id);
+    mysqli_stmt_execute($stmt);    
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+    exit();
 }
 
 function updateAccess($connection, $access, $id){
@@ -332,6 +433,21 @@ function deleteAccount($connection, $id){
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../accounts.php?status=accountdeleted");
+    exit();
+}
+
+function deleteClient($connection, $id){
+    $sql = "DELETE FROM clients WHERE client_id=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../clients.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../clients.php?status=clientdeleted");
     exit();
 }
 
@@ -497,6 +613,52 @@ function fetchStockAll ($connection, $prodname) {
     exit();
 }
 
+function fetchClient ($connection, $id) {
+    $sql = "SELECT * FROM clients WHERE client_id=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../stocks.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $id);
+    mysqli_stmt_execute($stmt);    
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+    exit();
+}
+
+function fetchClientName ($connection, $client) {
+    $sql = "SELECT * FROM clients WHERE client_name=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../adding.php?add=project&error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $client);
+    mysqli_stmt_execute($stmt);    
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+    exit();
+}
+
 function fetchSpecific($connection, $table, $specific, $column) {
     $sql = "SELECT * FROM ".$table." WHERE ".$specific."=?;";
     $stmt = mysqli_stmt_init($connection);
@@ -578,6 +740,22 @@ function updateCategory($connection, $name, $id) {
     exit();
 }
 
+function updateClient($connection, $id, $name, $email, $phone, $address, $group){
+    $sql = "UPDATE clients SET client_name=?, client_email=?, client_contact=?, client_address=?, client_group=? WHERE client_id=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../clients.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ssssss", $name, $email, $phone, $address, $group, $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../clients.php?status=clientupdated");
+    exit();
+}
+
+
 function countAll($connection, $column, $table) {
     $sql = "SELECT COUNT($column)FROM $table;";
     $stmt = mysqli_stmt_init($connection);
@@ -615,7 +793,6 @@ function deleteSupplier($connection, $name){
     exit();
 }
 
-
 function updateSupplier($connection, $name, $id) {
     $sql = "UPDATE supplier SET supplier_name=? WHERE id=?";
     $stmt = mysqli_stmt_init($connection);
@@ -643,5 +820,101 @@ function orderConfirm($connection, $admin, $custom_name, $name, $code, $category
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../purchaseorder.php?status=purchased");
+    exit();
+}
+
+function countSpecific($connection, $column, $table, $column_value, $verify_value) {
+    $sql = "SELECT COUNT($column)FROM $table WHERE $column_value=?;";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../index.php?error=stmtfailedexists");
+        exit();
+    }
+    mysqli_stmt_bind_param($stmt, "s", $verify_value);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+    exit();
+}
+
+function addProject($connection, $id, $title, $progress, $priority, $client, $budget, $start_date, $due_date, $assign, $group, $note, $status, $client_id) {
+    $sql = "INSERT INTO projects (project_id, project_name, project_progress, project_priority, project_client, project_budget, start_time, due_date, project_members, project_group, project_note, project_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    $sql2 = "UPDATE clients SET client_group=? WHERE client_id=?";
+    $stmt = mysqli_stmt_init($connection);
+    $stmt2 = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../adding.php?add=project&error=stmtfailedcreate1");
+        exit();
+    }elseif (!mysqli_stmt_prepare($stmt2, $sql2)) {
+        header("location: ../adding.php?add=project&error=stmtfailedcreate2");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ssssssssssss", $id, $title, $progress, $priority, $client, $budget, $start_date, $due_date, $assign, $group, $note, $status);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    mysqli_stmt_bind_param($stmt2, "ss", $group, $client_id);
+    mysqli_stmt_execute($stmt2);
+    mysqli_stmt_close($stmt2);
+    header("location: ../project.php?status=projectadded");
+    exit();
+}
+
+function fetchProject($connection, $id) {
+    $sql = "SELECT * FROM projects WHERE project_id=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../index.php?error=stmtfailedexists");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $id);
+    mysqli_stmt_execute($stmt);
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_array($resultData)) {
+        return $row;
+    }else {
+        $result = false;
+        return $result;
+    }
+}
+
+function updateProject($connection, $title, $progress, $priority, $client, $budget, $start_date, $due_date, $assign, $group, $note, $status, $id) {
+    $sql = "UPDATE projects SET project_name=?, project_progress=?, project_priority=?, project_client=?, project_budget=?, start_time=?, due_date=?, project_members=?, project_group=?, project_note=?, project_status=? WHERE project_id=?;";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../project.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ssssssssssss", $title, $progress, $priority, $client, $budget, $start_date, $due_date, $assign, $group, $note, $status, $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: ../project.php?status=projectupdated");
+    exit();
+}
+
+function deleteProject($connection, $id){
+    $sql = "DELETE FROM projects WHERE project_id=?";
+    $stmt = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: project.php?error=stmtfailedcreate");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("location: project.php?status=projectdeleted");
     exit();
 }

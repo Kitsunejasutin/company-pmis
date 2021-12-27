@@ -10,8 +10,9 @@
             </ul>
             <ul id="categories">
                 <li class="categories"><a><i class="fas fa-file-export"></i>Project<i class="arrow right"></i></a></li>
-                <a href="addproject.php"><li class="dropdown"><span>Add Project</span></li></a>
+                <a href="adding.php?add=project"><li class="dropdown"><span>Add Project</span></li></a>
                 <a href="project.php"><li class="dropdown"><span>Manage Projects</span></li></a>
+                <a href="clients.php"><li class="dropdown"><span>Clients</span></li></a>
                 <a href="todo.php"><li class="dropdown"><span>To Do List</span></li></a>
             </ul>
             <ul id="categories">

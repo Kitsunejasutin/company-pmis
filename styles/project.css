@@ -1,0 +1,215 @@
+div.header {
+    display: flex;
+    margin: auto;
+    width: 90%;
+}
+
+div.headertwo {
+    display: flex;
+}
+
+div.card {
+    width: 100%;
+    min-height: 30vh;
+    margin: auto;
+    text-decoration: none;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);
+    -webkit-box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);
+    -moz-box-shadow: 0px 1px 5px 5px rgba(0,0,0,0.18);
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    flex: 1;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+}
+
+.first{
+    background-color: blanchedalmond;
+    border-radius: 15px;
+}
+
+.second {
+    background-color: rgba(228, 223, 216, 0.74);
+    border-radius: 15px;
+}
+
+.third {
+    background-color: rgb(247, 205, 148);
+    border-radius: 15px;
+}
+
+.fa-tasks, .fa-check-circle, .fa-dot-circle {
+    font-size: 90px;
+    color: rgb(96, 96, 226);
+    padding-top: 20px;
+}
+
+p.align-right{
+    position: absolute;
+    margin: 65px;
+    padding-left: 160px;
+    text-align: right;
+    font-size: 30px;
+}
+
+p.header {
+    font-size: 2rem;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    padding-left: 35px;
+}
+
+table,th,tr,td {
+    text-align: center;
+    margin-left: 100px;
+}
+
+table {
+    min-width: 1300px;
+    margin: auto;
+    height: 120px;
+    border: 1px solid rgba(0, 0, 0, 0.171);
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px gray;
+    background-color: #fff;
+    text-align: left;
+}
+
+table#tableData {
+    height: 100px;
+}
+
+thead {
+    box-shadow: 0 5px 10px gray;
+}
+
+th {
+    border: 1px solid rgba(0, 0, 0, 0.075);
+    padding: .5rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.7rem;
+}
+
+.textone {
+    padding-left: 16px;
+}
+
+.texttwo {
+    padding-left: 14px;
+}
+
+.textthree {
+    padding-left: 27px;
+}
+
+a.action {
+    padding: .5rem;
+    background-color: gray;
+    text-align: center;
+    color: #fff;
+    border-radius: 6px;
+    margin-top: 15px;
+    height: 40px;
+}
+
+.hidden{
+    display: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    top: 140px;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+div.table {
+    width: 60%;
+    top: 70px;
+}
+
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:70; opacity:1}
+}
+  
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:70; opacity:1}
+}
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+  
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+  
+.modal-header {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+  
+.modal-body {
+    padding: 2px 16px;
+}
+
+.input-table {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    width: 40%;
+    text-align: center;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: rgb(0, 0, 0) !important;
+}

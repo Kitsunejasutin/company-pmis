@@ -24,7 +24,6 @@ body{
 .container{
   display: flex;
   position: relative;
-  overflow: auto;
 }
 
 .container .sidebar{
